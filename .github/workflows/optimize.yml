@@ -1,0 +1,29 @@
+name: Optimize Workflow
+on:
+  push:
+    branches: [ main ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      # Checks-out your repository
+      - uses: actions/checkout@v2
+        with:
+          ref: ${{ github.ref }}
+
+      # - name: Minify Action
+      #   uses: anthonyftwang/minify-action@v1.0.1
+
+      - name: Generate the sitemap
+        id: sitemap
+        uses: FSpark/generate-sitemap@url-encoding
+        with:
+          base-url-path: https://wiki.fspark.me/
+          encode-uri: true
+
+      # Auto-commit to repository
+      - uses: stefanzweifel/git-auto-commit-action@v4
+        with:
+          commit_message: Optimize source code
+          branch: ${{ github.ref }}
